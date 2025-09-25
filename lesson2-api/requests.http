@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:3000/api/items
+
+### Get all items
+GET {{baseUrl}}
+Accept: application/json
+
+###
+
+# Get a single item (replace 1 with a valid ID from the list)
+GET {{baseUrl}}/1
+Accept: application/json
+
+###
+
+# Create a new item
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "New Thing",
+  "description": "Created from REST Client"
+}
+
+###
+
+# Update an existing item (replace 1 with a valid ID)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "name": "Updated Thing",
+  "description": "Updated description"
+}
+
+###
+
+# Delete an item (replace 1 with a valid ID)
+DELETE {{baseUrl}}/1
+Accept: application/json
