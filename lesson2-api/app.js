@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const itemsRouter = require('./routes/items');
+const itemsRouter = require('./routes/contacts'); // import the items routes
 
 const app = express();
 

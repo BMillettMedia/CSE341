@@ -1,39 +1,32 @@
-@baseUrl = http://localhost:3000/api/items
+### Health check
+GET http://localhost:3000/health
 
-### Get all items
-GET {{baseUrl}}
-Accept: application/json
+### Get all contacts
+GET http://localhost:3000/api/contacts
 
-###
+### Get one contact
+GET http://localhost:3000/api/contacts/contact2
 
-# Get a single item (replace 1 with a valid ID from the list)
-GET {{baseUrl}}/1
-Accept: application/json
-
-###
-
-# Create a new item
-POST {{baseUrl}}
+### Create a new contact
+POST http://localhost:3000/api/contacts
 Content-Type: application/json
 
 {
-  "name": "New Thing",
-  "description": "Created from REST Client"
+  "id": "contact4",
+  "firstName": "Maria",
+  "lastName": "Lopez",
+  "email": "maria@test.com",
+  "favoriteColor": "Blue",
+  "birthday": "01/01/99"
 }
 
-###
-
-# Update an existing item (replace 1 with a valid ID)
-PUT {{baseUrl}}/1
+### Update a contact
+PUT http://localhost:3000/api/contacts/contact2
 Content-Type: application/json
 
 {
-  "name": "Updated Thing",
-  "description": "Updated description"
+  "favoriteColor": "Red"
 }
 
-###
-
-# Delete an item (replace 1 with a valid ID)
-DELETE {{baseUrl}}/1
-Accept: application/json
+### Delete a contact
+DELETE http://localhost:3000/api/contacts/contact4
