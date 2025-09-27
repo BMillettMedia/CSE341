@@ -12,4 +12,5 @@ const contactSchema = new mongoose.Schema({
 // Create a model
 const Contact = mongoose.model('Contact', contactSchema);
 
+//double check variable name for duplicate names
 module.exports = Contact;
