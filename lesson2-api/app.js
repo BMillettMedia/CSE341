@@ -1,34 +1,40 @@
-// app.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
-const itemsRouter = require('./routes/contacts'); // import the items routes
+// Import routes
+const contactsRoutes = require('./routes/contacts');
 
 const app = express();
 
 // Middleware
-app.use(cors());               // allow cross-origin requests (needed for browser/frontend)
-app.use(express.json());       // parse JSON bodies
+app.use(cors());
+app.use(express.json());
 
-// Health route (useful for deployment keep-alive checks)
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
+
+// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', uptime: process.uptime() });
 });
 
-// Main API routes
-app.use('/api/items', itemsRouter);
+// Routes
+app.use('/contacts', contactsRoutes);
 
-// Generic 404 handler
+// 404 Handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
-// Generic error handler
+// Error Handler
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`API listening on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));

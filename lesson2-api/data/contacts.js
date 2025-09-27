@@ -1,60 +1,22 @@
-// data/contacts.js
 const fs = require('fs');
 const path = require('path');
 
-// Path to your JSON file
+// Path to the JSON file
 const filePath = path.join(__dirname, 'contacts.json');
 
-// Helper to read contacts
-function readContacts() {
-  const data = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(data);
-}
+// Load contacts from JSON file
+const contactsData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
-// Helper to save contacts
-function writeContacts(contacts) {
-  fs.writeFileSync(filePath, JSON.stringify(contacts, null, 2));
-}
+// Convert object into array
+const contacts = Object.values(contactsData);
 
-// CRUD functions
-function getAllContacts() {
-  return readContacts();
-}
+// Return all contacts
+const getContacts = () => contacts;
 
-function getContactById(id) {
-  const contacts = readContacts();
-  return contacts[id] || null;
-}
-
-function createContact(id, contact) {
-  const contacts = readContacts();
-  contacts[id] = contact;
-  writeContacts(contacts);
-  return contact;
-}
-
-function updateContact(id, updates) {
-  const contacts = readContacts();
-  if (!contacts[id]) return null;
-
-  contacts[id] = { ...contacts[id], ...updates };
-  writeContacts(contacts);
-  return contacts[id];
-}
-
-function deleteContact(id) {
-  const contacts = readContacts();
-  if (!contacts[id]) return false;
-
-  delete contacts[id];
-  writeContacts(contacts);
-  return true;
-}
-
-module.exports = {
-  getAllContacts,
-  getContactById,
-  createContact,
-  updateContact,
-  deleteContact
+// Return one contact by "id" (using array index + 1)
+const getContactById = (id) => {
+  const index = parseInt(id, 10) - 1;
+  return contacts[index] || null;
 };
+
+module.exports = { getContacts, getContactById };
