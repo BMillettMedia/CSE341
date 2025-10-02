@@ -1,0 +1,39 @@
+### Get all contacts
+GET http://localhost:3000/contacts
+Accept: application/json
+
+###
+
+### Get one contact (replace <id> with actual ObjectId)
+GET http://localhost:3000/contacts/<id>
+Accept: application/json
+
+###
+
+### Create a contact
+POST http://localhost:3000/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Johnson",
+  "email": "alice@test.com",
+  "favoriteColor": "Blue",
+  "birthday": "01/01/1990"
+}
+
+###
+
+### Update a contact
+PUT http://localhost:3000/contacts/<id>
+Content-Type: application/json
+
+{
+  "favoriteColor": "Red"
+}
+
+###
+
+### Delete a contact
+DELETE http://localhost:3000/contacts/<id>
+Accept: application/json
