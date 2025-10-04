@@ -12,6 +12,12 @@ app.use(bodyParser.json());
 // Routes
 app.use('/', require('./routes'));
 
+// Browser valid response logic
+app.get('/', (req, res) => {
+  res.send('Welcome to the CSE341 Lesson 3 API! Use /contacts to view or modify contacts.');
+});
+
+
 // Error handling for invalid routes
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Route not found' });
