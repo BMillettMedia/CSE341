@@ -1,9 +1,9 @@
 // app.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongodb = require('../db/connection.js');
+const mongodb = require('./db/connection');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const app = express();
 
 // Middleware
