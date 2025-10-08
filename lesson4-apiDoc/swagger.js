@@ -6,7 +6,7 @@ const doc = {
     title: 'Contacts API',
     description: 'Contacts API documentation with Swagger for CSE341 Lesson 4'
   },
-  host: 'localhost:3000', // This will change automatically in production if BASE_URL is used
+  host: 'localhost:3002', // This will change automatically in production if BASE_URL is used
   schemes: ['http', 'https'],
   definitions: {
     Contact: {

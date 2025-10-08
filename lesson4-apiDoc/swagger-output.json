@@ -1,0 +1,116 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Contacts API",
+    "description": "Contacts API documentation with Swagger for CSE341 Lesson 4"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/contacts": {
+      "get": {
+        "tags": ["Contacts"],
+        "summary": "Get all contacts",
+        "description": "Returns all contacts from the database",
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Contact" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "Create a new contact",
+        "description": "Adds a new contact to the database",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Contact" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Contact created successfully"
+          }
+        }
+      }
+    },
+    "/contacts/{id}": {
+      "get": {
+        "tags": ["Contacts"],
+        "summary": "Get contact by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "MongoDB ObjectId of the contact"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Contact found" },
+          "404": { "description": "Contact not found" }
+        }
+      },
+      "put": {
+        "tags": ["Contacts"],
+        "summary": "Update contact by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Contact" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Contact updated successfully" },
+          "404": { "description": "Contact not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Contacts"],
+        "summary": "Delete contact by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Contact deleted successfully" },
+          "404": { "description": "Contact not found" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string", "example": "John" },
+        "lastName": { "type": "string", "example": "Doe" },
+        "email": { "type": "string", "example": "john.doe@example.com" },
+        "favoriteColor": { "type": "string", "example": "Blue" },
+        "birthday": { "type": "string", "example": "1990-01-01" }
+      }
+    }
+  }
+}
