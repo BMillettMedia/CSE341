@@ -1,91 +1,133 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
     "title": "Contacts API",
-    "description": "Contacts API documentation with Swagger for CSE341 Lesson 4"
+    "description": "Contacts API documentation with Swagger for CSE341 Lesson 4",
+    "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:3002",
   "basePath": "/",
-  "schemes": ["http", "https"],
+  "schemes": [
+    "http",
+    "https"
+  ],
   "paths": {
-    "/contacts": {
+    "/": {
       "get": {
-        "tags": ["Contacts"],
-        "summary": "Get all contacts",
-        "description": "Returns all contacts from the database",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Successful request",
-            "schema": {
-              "type": "array",
-              "items": { "$ref": "#/definitions/Contact" }
-            }
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/contacts/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "post": {
-        "tags": ["Contacts"],
-        "summary": "Create a new contact",
-        "description": "Adds a new contact to the database",
+        "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
-            "required": true,
-            "schema": { "$ref": "#/definitions/Contact" }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "favoriteColor": {
+                  "example": "any"
+                },
+                "birthday": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "201": {
-            "description": "Contact created successfully"
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/contacts/{id}": {
       "get": {
-        "tags": ["Contacts"],
-        "summary": "Get contact by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "MongoDB ObjectId of the contact"
+            "type": "string"
           }
         ],
         "responses": {
-          "200": { "description": "Contact found" },
-          "404": { "description": "Contact not found" }
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "put": {
-        "tags": ["Contacts"],
-        "summary": "Update contact by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": { "$ref": "#/definitions/Contact" }
           }
         ],
         "responses": {
-          "204": { "description": "Contact updated successfully" },
-          "404": { "description": "Contact not found" }
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       },
       "delete": {
-        "tags": ["Contacts"],
-        "summary": "Delete contact by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -95,8 +137,18 @@
           }
         ],
         "responses": {
-          "200": { "description": "Contact deleted successfully" },
-          "404": { "description": "Contact not found" }
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
     }
@@ -105,11 +157,26 @@
     "Contact": {
       "type": "object",
       "properties": {
-        "firstName": { "type": "string", "example": "John" },
-        "lastName": { "type": "string", "example": "Doe" },
-        "email": { "type": "string", "example": "john.doe@example.com" },
-        "favoriteColor": { "type": "string", "example": "Blue" },
-        "birthday": { "type": "string", "example": "1990-01-01" }
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "favoriteColor": {
+          "type": "string",
+          "example": "Blue"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "1990-01-01"
+        }
       }
     }
   }
