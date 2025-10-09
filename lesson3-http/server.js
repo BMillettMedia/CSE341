@@ -1,23 +1,22 @@
+// server.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongodb = require('./db/connect');
+const dotenv = require('dotenv');
+const contactsRoutes = require('./routes/contacts.js');
 
-const port = process.env.PORT || 3001;
+dotenv.config();
+
 const app = express();
 
-app
-  .use(bodyParser.json())
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-  })
-  .use('/', require('./routes'));
+app.use(express.json());
 
-mongodb.initDb((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    app.listen(port);
-    console.log(`Connected to DB and listening on ${port}`);
-  }
+// Use the contacts routes
+app.use('/contacts', contactsRoutes);
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
+
+//professor solution?
+// app.use('/api/contacts', contactsRoutes);
