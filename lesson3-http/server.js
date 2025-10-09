@@ -1,22 +1,27 @@
-// server.js
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
-const contactsRoutes = require('./routes/contacts.js');
-
-dotenv.config();
+const cors = require('cors');
+const db = require('./db/connection');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
-// Use the contacts routes
-app.use('/contacts', contactsRoutes);
+app.use('/', require('./routes'));
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
 });
 
-//professor solution?
-// app.use('/api/contacts', contactsRoutes);
+db.initDb((err) => {
+  if (err) {
+    console.error('Failed to connect to DB:', err);
+    process.exit(1);
+  } else {
+    app.listen(PORT, () => {
+      console.log(`API listening on http://localhost:${PORT}`);
+    });
+  }
+});
