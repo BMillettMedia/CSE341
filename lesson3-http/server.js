@@ -1,27 +1,23 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const db = require('./db/connection');
+const bodyParser = require('body-parser');
+const mongodb = require('./db/connect');
 
+const port = process.env.PORT || 3001;
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
+app
+  .use(bodyParser.json())
+  .use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+  })
+  .use('/', require('./routes'));
 
-app.use('/', require('./routes'));
-
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime() });
-});
-
-db.initDb((err) => {
+mongodb.initDb((err) => {
   if (err) {
-    console.error('Failed to connect to DB:', err);
-    process.exit(1);
+    console.log(err);
   } else {
-    app.listen(PORT, () => {
-      console.log(`API listening on http://localhost:${PORT}`);
-    });
+    app.listen(port);
+    console.log(`Connected to DB and listening on ${port}`);
   }
 });
