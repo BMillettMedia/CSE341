@@ -1,75 +1,28 @@
-##############################################
-# LOCALHOST REQUESTS
-##############################################
+### GET all contacts
+GET http://localhost:3000/contacts
 
-### Get all contacts
-GET http://localhost:3001/contacts
+### GET contact by ID
+GET http://localhost:3000/contacts/PUT_AN_EXISTING_ID_HERE
 
-### Get contact by ID
-GET http://localhost:3001/contacts/6521234567890abcdef1234
-
-### Create a new contact
-POST http://localhost:3001/contacts
+### POST new contact
+POST http://localhost:3000/contacts
 Content-Type: application/json
 
 {
-  "firstName": "Ashley",
-  "lastName": "Weaver",
-  "email": "aWeaver@test.com",
-  "favoriteColor": "Brown",
-  "birthday": "2000-06-19"
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "favoriteColor": "Blue",
+  "birthday": "1990-01-01"
 }
 
-### Update a contact
-PUT http://localhost:3001/contacts/6521234567890abcdef1234
+### PUT update contact
+PUT http://localhost:3000/contacts/PUT_AN_EXISTING_ID_HERE
 Content-Type: application/json
 
 {
-  "firstName": "Sarah",
-  "lastName": "Birch",
-  "email": "sarahB@gmail.com",
-  "favoriteColor": "Yellow",
-  "birthday": "2000-12-12"
+  "favoriteColor": "Red"
 }
 
-### Delete a contact
-DELETE http://localhost:3001/contacts/6521234567890abcdef1234
-
-
-
-##############################################
-# PRODUCTION (example – update to your host later)
-##############################################
-
-### Get all contacts
-GET https://cse341-instructor.herokuapp.com/contacts
-
-### Get contact by ID
-GET https://cse341-instructor.herokuapp.com/contacts/622023f642f9ab4cd6e060b3
-
-### Create contact
-POST https://cse341-instructor.herokuapp.com/contacts
-Content-Type: application/json
-
-{
-  "firstName": "Ashley",
-  "lastName": "Weaver",
-  "email": "aWeaver@test.com",
-  "favoriteColor": "Brown",
-  "birthday": "2000-06-19"
-}
-
-### Update contact
-PUT https://cse341-instructor.herokuapp.com/contacts/6220bcb39cd507e920c75a0b
-Content-Type: application/json
-
-{
-  "firstName": "Sarah",
-  "lastName": "Birch",
-  "email": "sarahB@gmail.com",
-  "favoriteColor": "Yellow",
-  "birthday": "2000-12-12"
-}
-
-### Delete contact
-DELETE https://cse341-instructor.herokuapp.com/contacts/6220e34083149913680f9a64
+### DELETE contact
+DELETE http://localhost:3000/contacts/PUT_AN_EXISTING_ID_HERE

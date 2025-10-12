@@ -1,10 +1,13 @@
 // app.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongodb = require('./db/connection');
+const dotenv = require('dotenv');
+const { initDb } = require('./db/connection');
 
-const port = process.env.PORT || 3001;
+dotenv.config();
+
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -12,24 +15,16 @@ app.use(bodyParser.json());
 // Routes
 app.use('/', require('./routes'));
 
-// Browser valid response logic
-app.get('/', (req, res) => {
-  res.send('Welcome to the CSE341 Lesson 3 API! Use /contacts to view or modify contacts.');
-});
-
-
-// Error handling for invalid routes
-app.use((req, res, next) => {
+// Fallback route
+app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Connect to database then start server
-mongodb.initDb((err) => {
+// Connect to DB then start server
+initDb((err) => {
   if (err) {
-    console.log(err);
+    console.error('Database connection failed:', err);
   } else {
-    app.listen(port, () => {
-      console.log(`Connected to DB and listening on port ${port}`);
-    });
+    app.listen(port, () => console.log(`✅ Server running on port ${port}`));
   }
 });
