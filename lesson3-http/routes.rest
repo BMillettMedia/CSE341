@@ -1,11 +1,11 @@
 ### GET all contacts
-GET http://localhost:3000/contacts
+GET http://localhost:3001/contacts
 
 ### GET contact by ID
-GET http://localhost:3000/contacts/PUT_AN_EXISTING_ID_HERE
+GET http://localhost:3001/contacts/
 
 ### POST new contact
-POST http://localhost:3000/contacts
+POST http://localhost:3001/contacts
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### PUT update contact
-PUT http://localhost:3000/contacts/PUT_AN_EXISTING_ID_HERE
+PUT http://localhost:3001/contacts/PUT_AN_EXISTING_ID_HERE
 Content-Type: application/json
 
 {
@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 
 ### DELETE contact
-DELETE http://localhost:3000/contacts/PUT_AN_EXISTING_ID_HERE
+DELETE http://localhost:3001/contacts/

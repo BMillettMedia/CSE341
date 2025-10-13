@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "0001",
+    "firstName": "Sarah",
+    "lastName": "Birch",
+    "email": "amazingwoman@test.com",
+    "favoriteColor": "Green",
+    "birthday": "12/12/20"
+  },
+  {
+    "_id": "0002",
+    "firstName": "Jimmy",
+    "lastName": "Carter",
+    "email": "jCarter@test.com",
+    "favoriteColor": "Purple",
+    "birthday": "07/12/10"
+  },
+  {
+    "_id": "0003",
+    "firstName": "Cassandra",
+    "lastName": "Anderson",
+    "email": "AndersonC@test.com",
+    "favoriteColor": "Yellow",
+    "birthday": "02/22/95"
+  }
+]

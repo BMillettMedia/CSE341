@@ -1,37 +1,36 @@
 // db/connection.js
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
-let dotenv = require('dotenv');
+const dotenv = require('dotenv');
 dotenv.config();
 
-let _db;
+let _db = null;
+let _useLocalData = false;
 
 const initDb = async (callback) => {
   if (_db) {
-    console.log('Database is already initialized!');
+    console.log('✅ Database already initialized!');
     return callback(null, _db);
   }
 
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri);
-
   try {
+    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     _db = client.db();
-    console.log('Connected to MongoDB');
+    console.log('✅ Connected to MongoDB Atlas');
     callback(null, _db);
   } catch (err) {
-    console.error('MongoDB connection failed:', err);
-    callback(err);
+    console.warn('⚠️ MongoDB connection failed, using local sample data instead.');
+    _useLocalData = true;
+    callback(null, null); // Don't crash the app
   }
 };
 
 const getDb = () => {
-  if (!_db) {
-    throw new Error('Database not initialized. Call initDb first.');
-  }
+  if (_useLocalData) return null; // Return null so controllers know to use fallback
+  if (!_db) throw Error('Database not initialized!');
   return _db;
 };
 
-module.exports = { initDb, getDb };
+const isUsingLocalData = () => _useLocalData;
 
+module.exports = { initDb, getDb, isUsingLocalData };
