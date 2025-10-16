@@ -1,0 +1,51 @@
+### GET all contacts - default JSON
+GET http://localhost:3001/contacts
+Accept: application/json
+
+###
+
+### GET all contacts - XML (Accept header)
+GET http://localhost:3001/contacts
+Accept: application/xml
+
+###
+
+### GET all contacts - CSV (query param)
+GET http://localhost:3001/contacts?format=csv
+
+###
+
+### GET one contact (replace ID)
+GET http://localhost:3001/contacts/
+Accept: application/json
+
+###
+
+### POST create a contact
+POST http://localhost:3001/contacts
+Content-Type: application/json
+
+{
+  "firstName":"Ada",
+  "lastName":"Lovelace",
+  "email":"ada@example.com",
+  "favoriteColor":"Blue",
+  "birthday":"1815-12-10"
+}
+
+###
+
+### PUT update (replace ID)
+PUT http://localhost:3001/contacts/
+Content-Type: application/json
+
+{
+  "favoriteColor": "Yellow"
+}
+
+###
+
+### DELETE (replace ID)
+DELETE http://localhost:3001/contacts/
+
+//Error that I could use later. Research way to better use {{id}} in rest client
