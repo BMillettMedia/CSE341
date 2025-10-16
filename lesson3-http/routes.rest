@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### PUT update contact
-PUT http://localhost:3001/contacts/PUT_AN_EXISTING_ID_HERE
+PUT http://localhost:3001/contacts/
 Content-Type: application/json
 
 {

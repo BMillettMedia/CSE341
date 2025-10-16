@@ -25,8 +25,8 @@ const getAllContacts = async (req, res) => {
       return res.status(200).json(sampleData);
     }
 
-    const db = getDb();
-    const contacts = await db.collection('contacts').find().toArray();
+    const db = getDb("WebServices");
+    const contacts = await db.collection('Content').find().toArray();
     res.status(200).json(contacts);
   } catch (err) {
     console.error('❌ Error fetching contacts:', err);
@@ -44,11 +44,11 @@ const getContactById = async (req, res) => {
       return res.status(200).json(contact);
     }
 
-    const db = getDb();
+    const db = getDb("WebServices");
     const id = req.params.id;
     if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID format' });
 
-    const contact = await db.collection('contacts').findOne({ _id: new ObjectId(id) });
+    const contact = await db.collection('Content').findOne({ _id: new ObjectId(id) });
     if (!contact) return res.status(404).json({ error: 'Contact not found' });
 
     res.status(200).json(contact);
@@ -81,8 +81,8 @@ const createContact = async (req, res) => {
       return res.status(201).json({ message: 'Contact added (local mode)', contact: newContact });
     }
 
-    const db = getDb();
-    const result = await db.collection('contacts').insertOne({
+    const db = getDb("WebServices");
+    const result = await db.collection('Content').insertOne({
       firstName,
       lastName,
       email,
@@ -114,7 +114,7 @@ const updateContact = async (req, res) => {
     if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID format' });
 
     const db = getDb();
-    const result = await db.collection('contacts').updateOne(
+    const result = await db.collection('Content').updateOne(
       { _id: new ObjectId(id) },
       { $set: req.body }
     );
@@ -144,8 +144,8 @@ const deleteContact = async (req, res) => {
 
     if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID format' });
 
-    const db = getDb();
-    const result = await db.collection('contacts').deleteOne({ _id: new ObjectId(id) });
+    const db = getDb("WebServices");
+    const result = await db.collection('Content').deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 0) return res.status(404).json({ error: 'Contact not found' });
     res.status(200).json({ message: 'Contact deleted' });
