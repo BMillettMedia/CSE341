@@ -20,10 +20,10 @@ function writeLocalData(data) {
 /** ✅ GET all contacts **/
 const getAllContacts = async (req, res) => {
   try {
-    if (isUsingLocalData()) {
+    /*if (isUsingLocalData()) {
       const sampleData = readLocalData();
       return res.status(200).json(sampleData);
-    }
+    }*/ //local data fallback disabled per assignment instructions
 
     const db = getDb("WebServices");
     const contacts = await db.collection('Content').find().toArray();
@@ -37,12 +37,12 @@ const getAllContacts = async (req, res) => {
 /** ✅ GET contact by ID **/
 const getContactById = async (req, res) => {
   try {
-    if (isUsingLocalData()) {
+    /*if (isUsingLocalData()) {
       const sampleData = readLocalData();
       const contact = sampleData.find((c) => c._id === req.params.id);
       if (!contact) return res.status(404).json({ error: 'Contact not found' });
       return res.status(200).json(contact);
-    }
+    }*/
 
     const db = getDb("WebServices");
     const id = req.params.id;
@@ -132,7 +132,7 @@ const deleteContact = async (req, res) => {
   try {
     const id = req.params.id;
 
-    if (isUsingLocalData()) {
+    /*if (isUsingLocalData()) {
       const data = readLocalData();
       const newData = data.filter((c) => c._id !== id);
       if (data.length === newData.length) {
@@ -140,7 +140,7 @@ const deleteContact = async (req, res) => {
       }
       writeLocalData(newData);
       return res.status(200).json({ message: 'Contact deleted (local mode)' });
-    }
+    }*/
 
     if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid ID format' });
 

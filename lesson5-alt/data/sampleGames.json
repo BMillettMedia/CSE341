@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "0001",
+    "title": "The Legend of Zelda: Tears of the Kingdom",
+    "platform": "Nintendo Switch",
+    "genre": "Action-Adventure",
+    "rating": "E10+",
+    "releaseDate": "2023-05-12",
+    "developer": "Nintendo",
+    "coverArt": "https://upload.wikimedia.org/wikipedia/en/8/8d/The_Legend_of_Zelda_Tears_of_the_Kingdom_cover.jpg"
+  },
+  {
+    "_id": "0002",
+    "title": "Persona 5 Royal",
+    "platform": "PlayStation 4",
+    "genre": "JRPG",
+    "rating": "M",
+    "releaseDate": "2019-10-31",
+    "developer": "Atlus",
+    "coverArt": "https://upload.wikimedia.org/wikipedia/en/0/0e/Persona_5_Royal_cover_art.jpg"
+  },
+  {
+    "_id": "0003",
+    "title": "Hollow Knight",
+    "platform": "PC",
+    "genre": "Metroidvania",
+    "rating": "E10+",
+    "releaseDate": "2017-02-24",
+    "developer": "Team Cherry",
+    "coverArt": "https://upload.wikimedia.org/wikipedia/en/3/32/Hollow_Knight_cover.jpg"
+  },
+  {
+    "_id": "0004",
+    "title": "Spider-Man 2",
+    "platform": "PlayStation 5",
+    "genre": "Action",
+    "rating": "T",
+    "releaseDate": "2023-10-20",
+    "developer": "Insomniac Games",
+    "coverArt": "https://upload.wikimedia.org/wikipedia/en/0/05/Marvel%27s_Spider-Man_2_cover.jpg"
+  },
+  {
+    "_id": "0005",
+    "title": "Stardew Valley",
+    "platform": "PC",
+    "genre": "Simulation / Farming",
+    "rating": "E10+",
+    "releaseDate": "2016-02-26",
+    "developer": "ConcernedApe",
+    "coverArt": "https://upload.wikimedia.org/wikipedia/en/f/fd/Stardew_Valley_cover_art.png"
+  }
+]

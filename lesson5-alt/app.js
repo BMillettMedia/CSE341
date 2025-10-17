@@ -1,29 +1,20 @@
-// app.js
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { initDb } = require('./db/connection');
+const { connectToDb } = require('./db/connection');
+const routes = require('./routes');
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-
 app.use(cors());
 app.use(express.json());
+app.use('/', routes);
 
-// mount routes
-app.use('/', require('./routes'));
+const port = process.env.PORT || 3000;
 
-// health
-app.get('/health', (req, res) => res.json({ status: 'ok', uptime: process.uptime() }));
-
-// init DB and start
-initDb((err) => {
-  if (err) {
-    console.error('Failed to start due to DB error:', err);
-    process.exit(1);
+connectToDb((err) => {
+  if (!err) {
+    app.listen(port, () => console.log(`🎮 Server running on port ${port}`));
   } else {
-    app.listen(PORT, () => {
-      console.log(`Server listening on http://localhost:${PORT}`);
-    });
+    console.error('❌ Failed to connect to database');
   }
 });

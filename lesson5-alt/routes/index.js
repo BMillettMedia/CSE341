@@ -1,7 +1,7 @@
-// routes/index.js
 const express = require('express');
 const router = express.Router();
 
-router.use('/contacts', require('./contacts'));
+router.use('/games', require('./games'));
+router.use('/wishlist', require('./wishlist'));
 
 module.exports = router;
