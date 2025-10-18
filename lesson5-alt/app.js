@@ -1,20 +1,28 @@
+// app.js
 const express = require('express');
-const cors = require('cors');
-const { connectToDb } = require('./db/connection');
-const routes = require('./routes');
+const bodyParser = require('body-parser');
 require('dotenv').config();
+const { connectToServer } = require('./db/connection');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use('/', routes);
-
 const port = process.env.PORT || 3000;
 
-connectToDb((err) => {
+// Middleware
+app.use(bodyParser.json());
+
+// Routes
+app.use('/games', require('./routes/games'));
+
+// Default route
+app.get('/', (req, res) => {
+  res.send('🎮 Welcome to the Student Game Library API');
+});
+
+// Connect to MongoDB, then start server
+connectToServer((err) => {
   if (!err) {
-    app.listen(port, () => console.log(`🎮 Server running on port ${port}`));
+    app.listen(port, () => console.log(`✅ Server running on port ${port}`));
   } else {
-    console.error('❌ Failed to connect to database');
+    console.error('❌ Failed to start server:', err);
   }
 });

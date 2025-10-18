@@ -1,23 +1,24 @@
+// db/connection.js
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 let db;
 
-const connectToDb = async (callback) => {
+const uri = process.env.MONGODB_URI || 'your fallback local connection string';
+const client = new MongoClient(uri);
+
+const connectToServer = async (callback) => {
   try {
-    const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
-    db = client.db(); // uses the default DB from URI
-    console.log('✅ Connected to MongoDB');
-    callback();
+    db = client.db('WebServices'); // 👈 Database name (as shown in Compass)
+    console.log('✅ Connected to MongoDB Atlas');
+    return callback();
   } catch (err) {
-    console.error('❌ Database connection failed:', err);
-    callback(err);
+    console.error('❌ MongoDB connection failed:', err);
+    return callback(err);
   }
 };
 
 const getDb = () => db;
 
-module.exports = { connectToDb, getDb };
-const { ObjectId } = require('mongodb');
-const { getDb } = require('../db/connection');
+module.exports = { connectToServer, getDb };
