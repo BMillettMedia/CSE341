@@ -5,6 +5,10 @@ const cors = require('cors');
 const { connectToServer } = require('./db/connection');
 const routes = require('./routes');
 const swaggerUi = require('swagger-ui-express');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
+require('./auth/passportConfig'); // <-- Important
 
 const app = express();
 const PORT = process.env.PORT || 3003;
@@ -47,3 +51,29 @@ connectToServer((err) => {
     );
   }
 });
+
+
+// Middleware
+app.use(bodyParser.json());
+
+// Set up session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
+app.use('/auth', require('./routes/auth')); // <-- Add this line
+app.use('/', require('./routes')); // Your existing routes
+
+// Error handling for invalid routes
+app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
+
+module.exports = app;

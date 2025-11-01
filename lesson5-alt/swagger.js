@@ -7,7 +7,7 @@ const doc = {
     description: 'API for managing and viewing a collection of student favorite games.',
     version: '1.0.0'
   },
-  host: 'localhost:3000', // will update for Render later
+  host: 'localhost:3003', // will update for Render later
   schemes: ['http'],
   basePath: '/',
   definitions: {
