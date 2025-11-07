@@ -4,22 +4,27 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'Student Game Library API',
-    description: 'API for managing and viewing a collection of student favorite games.',
-    version: '1.0.0'
+    description: 'Games + wishlist API with OAuth and local auth'
   },
-  host: 'localhost:3003', // will update for Render later
+  host: process.env.SWAGGER_HOST || 'localhost:3000',
   schemes: ['http'],
-  basePath: '/',
+  securityDefinitions: {
+    cookieAuth: {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'connect.sid',
+      description: 'Session cookie. Authenticate using the /auth routes (login) first.'
+    }
+  },
   definitions: {
     Game: {
-      _id: '0001',
-      title: 'Hollow Knight',
+      title: 'Example Game',
       platform: 'PC',
-      genre: 'Metroidvania',
-      rating: 'E10+',
-      releaseDate: '2017-02-26',
-      developer: 'Team Cherry',
-      coverArt: 'https://upload.wikimedia.org/hollow_knight.jpg'
+      genre: 'Indie',
+      rating: 'E',
+      releaseDate: '2020-01-01',
+      developer: 'Example Dev',
+      coverArt: 'https://example.com/image.jpg'
     }
   }
 };
@@ -28,5 +33,6 @@ const outputFile = './swagger-output.json';
 const endpointsFiles = ['./app.js'];
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  console.log('✅ Swagger documentation generated.');
+  console.log('swagger-output.json generated');
 });
+// You can run this file with `node lesson5-alt/swagger.js` to generate swagger-output.json

@@ -8,72 +8,56 @@ const session = require('express-session');
 const swaggerUi = require('swagger-ui-express');
 const { connectToServer } = require('./db/connection');
 
-require('./auth/passportConfig'); // 🔐 Load Passport config
+require('./config/passportConfig'); // load strategies
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3000;
 
-// ---------- MIDDLEWARE SETUP ----------
-
-// Parse incoming JSON
+// Basic middleware
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
 
-// Configure session middleware BEFORE passport
+// Session + Passport (MUST be before routes)
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false } // set to true when using https in production
   })
 );
-
-// Initialize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ---------- SWAGGER DOCUMENTATION ----------
-
+// Swagger UI (if generated)
 try {
   const swaggerDocument = require('./swagger-output.json');
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  console.log('✅ Swagger UI route loaded at /api-docs');
 } catch (e) {
-  console.warn('⚠️ Swagger file not found. Run "npm run swagger" first.');
+  console.warn('Swagger docs not found. Run npm run swagger to generate swagger-output.json');
 }
 
-// ---------- ROUTES ----------
-
-// Authentication routes (Google OAuth)
+// Auth routes first
 app.use('/auth', require('./routes/auth'));
 
-// Main API routes (Games, Users, etc.)
+// API routes
 app.use('/', require('./routes'));
 
-// ---------- ERROR HANDLING ----------
-
-// Handle 404 for unknown routes
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
-});
-
-// Global error handler
+// 404 and error handlers
+app.use((req, res) => res.status(404).json({ error: 'Not Found' }));
 app.use((err, req, res, next) => {
-  console.error('❌ Server Error:', err);
-  res.status(err.status || 500).json({ error: err.message || 'Server error' });
+  console.error(err && err.stack ? err.stack : err);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
-// ---------- DATABASE CONNECTION + SERVER START ----------
-
+// Connect DB and start
 connectToServer((err) => {
   if (err) {
-    console.error('❌ DB connection failed:', err);
+    console.error('DB connection failed', err);
     process.exit(1);
   } else {
-    app.listen(PORT, () =>
-      console.log(`🚀 Server running on http://localhost:${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
   }
 });
 
