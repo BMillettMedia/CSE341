@@ -11,7 +11,7 @@ const { connectToServer } = require('./db/connection');
 require('./config/passportConfig'); // load strategies
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 // Basic middleware
 app.use(cors());
