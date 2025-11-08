@@ -1,45 +1,131 @@
 // routes/games.js
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/gamesController');
-const { body, validationResult } = require('express-validator');
-const authCheck = require('../middleware/authCheck');
+const { ObjectId } = require('mongodb');
+const { getDb } = require('../db/connection');
 
-// validation middleware for create
-const createValidation = [
-  body('title').trim().notEmpty().withMessage('title required'),
-  body('platform').trim().notEmpty().withMessage('platform required'),
-  body('genre').trim().notEmpty().withMessage('genre required'),
-  body('rating').trim().notEmpty().withMessage('rating required'),
-  body('releaseDate').trim().notEmpty().withMessage('releaseDate required'),
-  body('developer').trim().notEmpty().withMessage('developer required'),
-  body('coverArt').optional().isURL().withMessage('coverArt must be a valid URL'),
-  (req, res, next) => {
-    const errs = validationResult(req);
-    if (!errs.isEmpty()) return res.status(400).json({ errors: errs.array() });
-    next();
+// ✅ Helper function for validation
+function validateGame(game) {
+  const requiredFields = ['title', 'genre', 'platform', 'developer', 'releaseDate', 'rating', 'price'];
+  for (const field of requiredFields) {
+    if (!game[field]) {
+      return `Missing required field: ${field}`;
+    }
   }
-];
+  return null; // All good
+}
 
-// update validation (partial allowed)
-const updateValidation = [
-  body('coverArt').optional().isURL().withMessage('coverArt must be a valid URL'),
-  (req, res, next) => {
-    const errs = validationResult(req);
-    if (!errs.isEmpty()) return res.status(400).json({ errors: errs.array() });
-    next();
+/**
+ * 🧠 LESSON CONCEPT:
+ * Each route below demonstrates an important REST API principle:
+ * - GET = Retrieve data
+ * - POST = Create data
+ * - PUT = Update existing data
+ * - DELETE = Remove data
+ * 
+ * We also use proper validation and error handling patterns.
+ */
+
+// ✅ GET all games
+router.get('/', async (req, res, next) => {
+  try {
+    const db = getDb();
+    const games = await db.collection('games').find().toArray();
+    res.status(200).json(games);
+  } catch (err) {
+    next(err);
   }
-];
+});
 
-// Routes
-router.get('/', controller.getAllGames);
-router.get('/:id', controller.getGameById);
+// ✅ GET a single game by ID
+router.get('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid game ID format' });
+    }
 
-// Protected write routes
-router.post('/', authCheck, createValidation, controller.createGame);
-router.put('/:id', authCheck, updateValidation, controller.updateGame);
-router.delete('/:id', authCheck, controller.deleteGame);
+    const db = getDb();
+    const game = await db.collection('games').findOne({ _id: new ObjectId(id) });
+
+    if (!game) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    res.status(200).json(game);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ✅ POST (create) a new game
+router.post('/', async (req, res, next) => {
+  try {
+    const newGame = req.body;
+
+    // Validate all required fields
+    const validationError = validateGame(newGame);
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
+    }
+
+    const db = getDb();
+    const result = await db.collection('games').insertOne(newGame);
+    res.status(201).json({ message: 'Game added successfully', id: result.insertedId });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ✅ PUT (update) a game by ID
+router.put('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid game ID format' });
+    }
+
+    const updatedGame = req.body;
+    const validationError = validateGame(updatedGame);
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
+    }
+
+    const db = getDb();
+    const result = await db.collection('games').updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedGame }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    res.status(204).send(); // No Content (successful update)
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ✅ DELETE a game by ID
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid game ID format' });
+    }
+
+    const db = getDb();
+    const result = await db.collection('games').deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    res.status(200).json({ message: 'Game deleted successfully' });
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;
-        if (err) return next(err);
-        return res.status(200).json({ message: 'Login successful' });
