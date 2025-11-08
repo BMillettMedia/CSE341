@@ -30,7 +30,7 @@ function validateGame(game) {
 router.get('/', async (req, res, next) => {
   try {
     const db = getDb();
-    const games = await db.collection('games').find().toArray();
+    const games = await db.collection('GameContent').find().toArray();
     res.status(200).json(games);
   } catch (err) {
     next(err);
@@ -46,7 +46,7 @@ router.get('/:id', async (req, res, next) => {
     }
 
     const db = getDb();
-    const game = await db.collection('games').findOne({ _id: new ObjectId(id) });
+    const game = await db.collection('GameContent').findOne({ _id: new ObjectId(id) });
 
     if (!game) {
       return res.status(404).json({ error: 'Game not found' });
@@ -70,7 +70,7 @@ router.post('/', async (req, res, next) => {
     }
 
     const db = getDb();
-    const result = await db.collection('games').insertOne(newGame);
+    const result = await db.collection('GameContent').insertOne(newGame);
     res.status(201).json({ message: 'Game added successfully', id: result.insertedId });
   } catch (err) {
     next(err);
@@ -92,7 +92,7 @@ router.put('/:id', async (req, res, next) => {
     }
 
     const db = getDb();
-    const result = await db.collection('games').updateOne(
+    const result = await db.collection('GameContent').updateOne(
       { _id: new ObjectId(id) },
       { $set: updatedGame }
     );
@@ -116,7 +116,7 @@ router.delete('/:id', async (req, res, next) => {
     }
 
     const db = getDb();
-    const result = await db.collection('games').deleteOne({ _id: new ObjectId(id) });
+    const result = await db.collection('GameContent').deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Game not found' });
